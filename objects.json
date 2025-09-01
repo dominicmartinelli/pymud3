@@ -1,0 +1,39 @@
+[
+    {
+        "vnum": 6000,
+        "keywords": ["healing", "herb"],
+        "short_desc": "a healing herb",
+        "long_desc": "A healing herb grows here.",
+        "description": "A herb known for its medicinal properties.",
+        "item_type": "herb",
+        "effects": {}
+    },
+    {
+        "vnum": 6001,
+        "keywords": ["potion", "healing"],
+        "short_desc": "a potion of healing",
+        "long_desc": "A potion of healing has been left here.",
+        "description": "This potion restores health when consumed.",
+        "item_type": "potion",
+        "effects": {"hp": 50}
+    },
+    {
+        "vnum": 6002,
+        "keywords": ["amulet", "protection"],
+        "short_desc": "an amulet of protection",
+        "long_desc": "An amulet of protection lies here.",
+        "description": "This amulet offers protection to its wearer.",
+        "item_type": "amulet",
+        "effects": {"defense": 5}
+    },
+    {
+        "vnum": 6003,
+        "keywords": ["empty", "vial"],
+        "short_desc": "an empty vial",
+        "long_desc": "An empty vial has been discarded here.",
+        "description": "A small glass vial that can hold liquids.",
+        "item_type": "container",
+        "effects": {}
+    }
+]
+

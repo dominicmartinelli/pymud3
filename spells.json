@@ -1,0 +1,39 @@
+[
+    {
+        "name": "Fireball",
+        "description": "A blazing ball of fire that damages a single enemy.",
+        "mana_cost": 20,
+        "spell_type": "offensive",
+        "requires_target": true,
+        "damage_multiplier": 2,
+        "base_damage": [5, 15]
+    },
+    {
+        "name": "Magic Missile",
+        "description": "A magical missile that strikes a single enemy.",
+        "mana_cost": 15,
+        "spell_type": "offensive", 
+        "requires_target": true,
+        "damage_multiplier": 1,
+        "base_damage": [3, 10]
+    },
+    {
+        "name": "Heal",
+        "description": "Restores a significant amount of health.",
+        "mana_cost": 10,
+        "spell_type": "healing",
+        "requires_target": false,
+        "heal_multiplier": 2,
+        "base_heal": [5, 15]
+    },
+    {
+        "name": "Chain Lightning",
+        "description": "Arcs of electricity that strike all enemies in the room with massive damage.",
+        "mana_cost": 35,
+        "spell_type": "area_offensive", 
+        "requires_target": false,
+        "damage_multiplier": 4,
+        "base_damage": [40, 60]
+    }
+]
+
