@@ -178,3 +178,4 @@ This project is open source. Feel free to use, modify, and distribute.
 Run with Python's debug flag for detailed error output:
 ```bash
 python -u pymud-multi.py
+```
