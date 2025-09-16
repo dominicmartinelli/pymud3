@@ -273,18 +273,43 @@ chat_sessions = {}  # Key: room_vnum, Value: {'npc': NPC object, 'player': Playe
 chat_sessions_lock = threading.Lock()
 portal_connections = {}  # Key: room_vnum, Value: destination_room_vnum
 merchant_items = [
-    {"vnum": 9001, "keywords": ["healing", "potion"], "short_desc": "a healing potion", 
-     "long_desc": "A healing potion glows softly here.", "description": "This potion restores health.", 
+    {"vnum": 9001, "keywords": ["healing", "potion"], "short_desc": "a healing potion",
+     "long_desc": "A healing potion glows softly here.", "description": "This potion restores health.",
      "item_type": "potion", "effects": {"heal": 50}},
-    {"vnum": 9002, "keywords": ["magic", "scroll"], "short_desc": "a scroll of power", 
-     "long_desc": "A magical scroll lies here.", "description": "This scroll increases magical power.", 
+    {"vnum": 9002, "keywords": ["magic", "scroll"], "short_desc": "a scroll of power",
+     "long_desc": "A magical scroll lies here.", "description": "This scroll increases magical power.",
      "item_type": "scroll", "effects": {"mana": 25}},
-    {"vnum": 9003, "keywords": ["exotic", "ring"], "short_desc": "an exotic ring", 
-     "long_desc": "An exotic ring sparkles here.", "description": "This ring has mysterious properties.", 
+    {"vnum": 9003, "keywords": ["exotic", "ring"], "short_desc": "an exotic ring",
+     "long_desc": "An exotic ring sparkles here.", "description": "This ring has mysterious properties.",
      "item_type": "ring", "effects": {"magic": 3}},
-    {"vnum": 9004, "keywords": ["rare", "amulet"], "short_desc": "a rare amulet", 
-     "long_desc": "A rare amulet hangs here.", "description": "This amulet protects the wearer.", 
-     "item_type": "amulet", "effects": {"protection": 2}}
+    {"vnum": 9004, "keywords": ["rare", "amulet"], "short_desc": "a rare amulet",
+     "long_desc": "A rare amulet hangs here.", "description": "This amulet protects the wearer.",
+     "item_type": "amulet", "effects": {"protection": 2}},
+    # Weapons
+    {"vnum": 6004, "keywords": ["sword", "steel", "blade"], "short_desc": "a steel sword",
+     "long_desc": "A gleaming steel sword lies here.", "description": "A well-balanced steel sword with a sharp edge.",
+     "item_type": "weapon", "effects": {"attack": 10}},
+    {"vnum": 6005, "keywords": ["dagger", "knife", "blade"], "short_desc": "a sharp dagger",
+     "long_desc": "A sharp dagger has been dropped here.", "description": "A small but deadly dagger, perfect for quick strikes.",
+     "item_type": "weapon", "effects": {"attack": 6}},
+    {"vnum": 6006, "keywords": ["staff", "magic", "wooden"], "short_desc": "a wooden staff",
+     "long_desc": "A wooden staff rests against the wall.", "description": "A wooden staff imbued with magical energy.",
+     "item_type": "weapon", "effects": {"attack": 8, "magic": 5}},
+    # Armor
+    {"vnum": 6007, "keywords": ["armor", "leather", "chest"], "short_desc": "leather armor",
+     "long_desc": "A suit of leather armor lies here.", "description": "Sturdy leather armor that provides good protection.",
+     "item_type": "armor", "effects": {"defense": 8}},
+    {"vnum": 6008, "keywords": ["chain", "chainmail", "armor"], "short_desc": "chainmail armor",
+     "long_desc": "A suit of chainmail armor gleams here.", "description": "Heavy chainmail armor offering excellent protection.",
+     "item_type": "armor", "effects": {"defense": 15}},
+    # Shield
+    {"vnum": 6009, "keywords": ["shield", "iron", "round"], "short_desc": "an iron shield",
+     "long_desc": "An iron shield rests here.", "description": "A sturdy iron shield that can deflect attacks.",
+     "item_type": "shield", "effects": {"defense": 5}},
+    # Ring
+    {"vnum": 6010, "keywords": ["ring", "power", "golden"], "short_desc": "a golden ring of power",
+     "long_desc": "A golden ring of power sparkles here.", "description": "A magical ring that enhances the wearer's abilities.",
+     "item_type": "ring", "effects": {"attack": 3, "defense": 3}}
 ]
 
 # Colors for text formatting (Players see plain text as Telnet usually doesn't support these easily)
@@ -846,6 +871,7 @@ class Player:
         self.equipment = {
             'weapon': None,
             'armor': None,
+            'shield': None,
             'ring': None,
             'amulet': None
         }
@@ -3144,6 +3170,8 @@ def equip_command(player, item_name):
             slot = 'weapon'
         elif item_type == 'armor':
             slot = 'armor'
+        elif item_type == 'shield':
+            slot = 'shield'
         elif item_type == 'ring':
             slot = 'ring'
         elif item_type == 'amulet':

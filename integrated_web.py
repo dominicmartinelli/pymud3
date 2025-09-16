@@ -50,7 +50,13 @@ def create_web_interface():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PyMUD3 - Web Interface</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+    <script>
+        // Ensure Socket.IO loads before continuing
+        if (typeof io === 'undefined') {
+            document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"><\\/script>');
+        }
+    </script>
     <style>
         body { font-family: 'Courier New', monospace; background: #000; color: #00ff00; margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: 0 auto; display: flex; gap: 20px; height: 100vh; }
@@ -113,14 +119,43 @@ def create_web_interface():
     </div>
 
     <script>
+        console.log('DEBUG CLIENT: Script starting');
+
+        // Check if Socket.IO loaded
+        if (typeof io === 'undefined') {
+            console.error('DEBUG CLIENT: Socket.IO not loaded!');
+            alert('Socket.IO failed to load. Check your internet connection.');
+        } else {
+            console.log('DEBUG CLIENT: Socket.IO library loaded successfully');
+        }
+
         const socket = io();
+        console.log('DEBUG CLIENT: Socket.IO initialized');
         let connected = false;
 
+        socket.on('connect', function() {
+            console.log('DEBUG CLIENT: Socket connected successfully');
+        });
+
+        socket.on('connect_error', function(error) {
+            console.log('DEBUG CLIENT: Socket connection error:', error);
+        });
+
+        socket.on('disconnect', function() {
+            console.log('DEBUG CLIENT: Socket disconnected');
+        });
+
         socket.on('message', function(data) {
+            console.log('DEBUG CLIENT: Received message:', data);
             const output = document.getElementById('gameOutput');
+            console.log('DEBUG CLIENT: Output element found:', !!output);
             if (output) {
-                output.textContent += data.content + '\\n';
+                console.log('DEBUG CLIENT: Adding content:', data.content);
+                output.textContent += data.content + '\n';
                 output.scrollTop = output.scrollHeight;
+                console.log('DEBUG CLIENT: Message added successfully');
+            } else {
+                console.error('DEBUG CLIENT: gameOutput element not found!');
             }
         });
 
@@ -137,9 +172,14 @@ def create_web_interface():
         });
 
         function login() {
+            console.log('DEBUG CLIENT: Login function called');
             const name = document.getElementById('playerName').value.trim();
+            console.log('DEBUG CLIENT: Player name:', name);
             if (name) {
+                console.log('DEBUG CLIENT: Emitting login event with name:', name);
                 socket.emit('login', {name: name});
+            } else {
+                console.log('DEBUG CLIENT: No name entered');
             }
         }
 
@@ -177,10 +217,17 @@ def create_web_interface():
     def index():
         return render_template_string(HTML_TEMPLATE)
     
+    @web_socketio.on('connect')
+    def handle_connect():
+        print(f"DEBUG WEB: Client connected with session ID: {request.sid}")
+
     @web_socketio.on('login')
     def handle_login(data):
+        print(f"DEBUG WEB: Login attempt from session {request.sid} with data: {data}")
         player_name = data.get('name', '').strip()
+        print(f"DEBUG WEB: Player name extracted: '{player_name}'")
         if not player_name or len(player_name) > 20:
+            print(f"DEBUG WEB: Invalid name, emitting error")
             emit('error', {'message': 'Invalid name'})
             return
         
@@ -229,7 +276,11 @@ def create_web_interface():
     
     @web_socketio.on('command')
     def handle_command(data):
+        print(f"DEBUG WEB: Command received from session {request.sid}")
+        print(f"DEBUG WEB: Active sessions: {list(web_player_sessions.keys())}")
+
         if request.sid not in web_player_sessions:
+            print(f"DEBUG WEB: Session {request.sid} not found in active sessions")
             emit('error', {'message': 'Not logged in'})
             return
         
