@@ -1443,10 +1443,31 @@ def load_player_profile(player):
         for spell_name, spell_data in profile_data.get('spellbook', {}).items():
             if spell_name in spells:
                 player.spellbook[spell_name] = spells[spell_name]
-        
+
+        # Load current room location
+        saved_room_vnum = profile_data.get('current_room_vnum', 2201)
+        if saved_room_vnum in rooms:
+            # Remove player from current room if they're in one
+            if player.current_room and hasattr(player.current_room, 'players'):
+                if player in player.current_room.players:
+                    player.current_room.players.remove(player)
+
+            # Move player to saved room
+            player.current_room = rooms[saved_room_vnum]
+
+            # Add player to new room's player list
+            if not hasattr(player.current_room, 'players'):
+                player.current_room.players = []
+            if player not in player.current_room.players:
+                player.current_room.players.append(player)
+
+            print(f"Player {player.name} restored to room {saved_room_vnum} ({player.current_room.name})")
+        else:
+            print(f"Warning: Saved room {saved_room_vnum} not found, keeping player in default room")
+
         # Load active quests (simplified for now)
         player.active_quests = []
-        
+
         print(f"Loaded profile for {player.name}")
         
     except Exception as e:
