@@ -1,0 +1,22 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 4001
+  },
+  "llm": {
+    "server_ip": "127.0.0.1",
+    "server_port": 1337,
+    "model": "noromaid-7b",
+    "max_tokens": 150,
+    "temperature": 0.8,
+    "frequency_penalty": 0.5,
+    "presence_penalty": 1.0,
+    "top_p": 0.95
+  },
+  "game": {
+    "combat_round_interval": 1,
+    "lucky_find_chance": 0.05,
+    "surprise_events_enabled": true,
+    "daily_bonus_enabled": true
+  }
+}
