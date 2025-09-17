@@ -91,14 +91,11 @@ def create_web_interface():
             </div>
         </div>
         <div class="side-panel">
-            <button class="side-button" onclick="sendCommand('stats')">Stats</button>
+            <button class="side-button" onclick="sendCommand('stats')">Stats & Equipment</button>
             <button class="side-button" onclick="sendCommand('inventory')">Inventory</button>
-            <button class="side-button" onclick="sendCommand('equipment')">Equipment</button>
             <button class="side-button" onclick="sendCommand('spells')">Spells</button>
             <button class="side-button" onclick="sendCommand('look')">Look</button>
             <button class="side-button" onclick="sendCommand('who')">Players Online</button>
-            <button class="side-button" onclick="sendCommand('time')">Game Time</button>
-            <button class="side-button" onclick="sendCommand('score')">Score</button>
 
             <div class="info-section">
                 <h3>Quick Commands</h3>
